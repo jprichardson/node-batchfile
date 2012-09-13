@@ -1,5 +1,5 @@
 var testutil = require('testutil')
-  , btf = require('../lib/batchtransform')
+  , btf = require('../lib/batchfile')
   , fs = require('fs-extra')
   , path = require('path')
   , batch = require('batchflow')
@@ -10,7 +10,7 @@ var testutil = require('testutil')
 TEST_DIR = ''
 
 beforeEach(function(done) {
-    TEST_DIR = testutil.generateTestPath('test-batchtransform');
+    TEST_DIR = testutil.generateTestPath('test-batchfile');
     fs.mkdir(TEST_DIR, done);
 })
 
@@ -23,7 +23,7 @@ var md = "\n" +
 
 
 
-suite('batchtransform')
+suite('batchfile')
 
 test('transform scenario', function(done) {
     var files = [
@@ -58,14 +58,18 @@ test('transform scenario', function(done) {
             .error(function(err) {
                 throw err;
             })
-            .end(function() {
-                next();
+            .end(function(newFiles) {
+                next(newFiles);
             });
         },
-        checkResults: function() {
+        checkResults: function(newFiles) {
             var f1 = path.join(TEST_DIR, '1', 't1.html');
             var f2 = path.join(TEST_DIR, '2', 't2.html');
             var f3 = path.join(TEST_DIR, '3', 't3.html');
+
+            T (f1 === newFiles[0]);
+            T (f2 === newFiles[1]);
+            T (f3 === newFiles[2]);
             
             T (fs.existsSync(f1))
             T (fs.existsSync(f2))

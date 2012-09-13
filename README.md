@@ -1,11 +1,10 @@
-[![build status](https://secure.travis-ci.org/jprichardson/node-batchtransform.png)](http://travis-ci.org/jprichardson/node-batchtransform)
+[![build status](https://secure.travis-ci.org/jprichardson/node-batchfile.png)](http://travis-ci.org/jprichardson/node-batchfile)
 
-### This has been renamed to batchfile.
 
-Node.js - batchtransform
+Node.js - batchfile
 ================
 
-Batch transform/convert a collection of files e.g. convert a collection of markdown template files to html files.
+Batch operations, transformations, and conversions on files.
 
 
 
@@ -103,14 +102,14 @@ files.forEach(function(file, i) {
 
 Yuck. Very long and hard to follow code. Yes, you can definitely simplify this by using libraries such as [async][async], [seq][seq], or [batchflow][batchflow]. `batchtransform` itself uses [batchflow][batchflow].
 
-Let's see the previous sample rewritten using `batchtransform`.
+Let's see the previous sample rewritten using `batchfile`.
 
 #### New-School way
 
 ```javascript
 var marked = require('marked')
   , hogan = require('hogan.js')
-  , btf = require('batchtransform');
+  , btf = require('batchfile');
 
 var files = ['bio1.md', 'bio2.md', 'bio3.md'];
 var authors = ['JP', 'Leslie', 'Chris'];
@@ -134,14 +133,14 @@ btf(files).transform(function(i, file, data, write) {
 Installation
 ------------
 
-    npm install batchtransform
+    npm install batchfile
 
 
 
 Methods
 ------
 
-### btf(files)
+### batchfile(files)
 
 Constructor function.
 
@@ -151,19 +150,38 @@ Returns new BatchTransform object.
 
 Example:
 ```javascript
-var btf = require('batchtransform');
-var myBatch = btf('f1', 'file2', 'readme.md');
+var batchfile = require('batchfile');
+var myBatch = batchfile('f1', 'file2', 'readme.md');
 ```
 
 
-### transform(i, file, data, write)
+### transform(function(i, file, data, write){})
 
 Transformation callback.
 
 **i:** index of current iteration
+
 **file:** file path
+
 **data:** data buffer (don't forget to convert to a string)
+
 **write:** the write callback. Call this last, and call it only once.
+
+End callback is passed an array of written files.
+
+
+### read(function(i, file, data, done))
+
+**i:** index of current iteration
+
+**file:** file path
+
+**data:** data buffer (don't forget to convert to a string)
+
+**done:** the done callback. Call this last, and call it only once.
+
+End callback is passed an array of what was passed to the parameter of the done function.
+
 
 
 ### error(callback)
@@ -172,14 +190,14 @@ The error callback.
 
 ### end(callback)
 
-The end callback.
+The end callback. The callback is passed different parameters depending upon which function was called above.
 
 
 
 Author
 ------
 
-`node-batchtransform` was written by [JP Richardson][aboutjp]. You should follow him on Twitter [@jprichardson][twitter]. Also read his coding blog [Procbits][procbits]. If you write software with others, you should checkout [Gitpilot][gitpilot] to make collaboration with Git simple.
+`node-batchfile` was written by [JP Richardson][aboutjp]. You should follow him on Twitter [@jprichardson][twitter]. Also read his coding blog [Procbits][procbits]. If you write software with others, you should checkout [Gitpilot][gitpilot] to make collaboration with Git simple.
 
 
 
